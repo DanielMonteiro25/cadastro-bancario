@@ -1,0 +1,115 @@
+from enum import Enum
+from random import randint
+from os import system
+
+def cadastro_cliente():
+
+    dados_cliente = []
+
+    # declarando valores autodocumentados:
+    class campos_cadastro(Enum):
+        conta = 1
+        nome = 2
+        telefone = 3
+        email = 4
+        saldo_inicial = 6
+        limite_credito = 7
+        senha = 8
+
+    def gerar_conta():
+        # randint -> Return a random integer N such that a <= N <= b. Alias for randrange(a, b+1).
+        conta = randint(1000, 9999)
+        return conta
+
+    # aqui nessa parte eu adiciono o número da conta na lista com os dados do cliente:
+    conta = gerar_conta()
+    dados_cliente.append(conta)
+
+    def verificacao(dados_cliente: list, campos_cadastro: campos_cadastro):
+
+        try: 
+            match campos_cadastro:
+
+                case campos_cadastro.nome:
+                    try: 
+                        print(f"Nome do Cliente: {dados_cliente[1]}")
+                    except:
+                        nome_cliente = input("Nome do Cliente: ")
+
+                        if nome_cliente.strip() == "": raise Exception("O nome do cliente precisa ser preenchido.\n")
+                        elif nome_cliente.strip().isnumeric(): raise Exception("O nome do cliente não pode ser numérico.\n")
+
+                        return nome_cliente
+
+                case campos_cadastro.telefone:
+                    try:
+                        print(f"Telefone.......: {dados_cliente[2]}")
+                    except:
+                        try:
+                            telefone = int(input("Telefone.......:"))
+                            return telefone
+                        except:
+                            raise ValueError("O telefone precisa conter apenas números.\n")
+
+                case campos_cadastro.email:
+                    try: 
+                        print(f"E-mail..........: {dados_cliente[3]}")
+                    except:
+                        email = input("E-mail..........: ")
+
+                        email = email.strip()
+                        if not "@" in email or not "." in email: raise Exception("Email Inválido!\n")
+                        return email
+
+                case campos_cadastro.saldo_inicial:
+                    try:
+                        print(f"Saldo Inicial...: R$ {dados_cliente[4]}")
+                    except:
+                        try:
+                            saldo_inical = float(input("Saldo Inicial...: R$ "))
+                            if saldo_inical < 1000: raise Exception("O saldo inicial precisa ser maior que 1000")
+                            return saldo_inical
+                        except:
+                            raise ValueError("O saldo inicial precisa ser numérico.\n") 
+
+                case campos_cadastro.limite_credito:
+                    try:
+                        print(f"Limite de Crédito: R$ {dados_cliente[5]}")
+                    except:
+                        try:
+                            limite_credito = float(input("Limite de Crédito: R$ "))
+                            return limite_credito
+                        except:
+                            raise ValueError("O valor precisa ser numérico e maior ou igual a 0.\n")
+
+                case campos_cadastro.senha:
+                    senha = input(f"Senha............: ")
+
+                    if len(senha) != 6: raise Exception("A senha precisa ter 6 caracteres.")
+                    else: 
+                        confirmacao_senha = input("Repita a Senha...: ")
+                        if senha != confirmacao_senha: raise ValueError("As senhas precisam ser iguais! Por favor tente novamente.\n")
+                        return senha
+
+        except ValueError:
+            print("Digite o valor no formato correto!")
+            input("Digite ENTER para prosseguir.")
+
+        except Exception as e:
+            print(e)
+            input("Digite ENTER para prosseguir.")
+        
+    while len(dados_cliente) != 7: 
+        system("cls")
+        print(f"Número da conta: {dados_cliente[0]}")
+        dados_cliente.append(verificacao(dados_cliente, campos_cadastro.nome))   
+        dados_cliente.append(verificacao(dados_cliente, campos_cadastro.telefone))
+        dados_cliente.append(verificacao(dados_cliente, campos_cadastro.email))  
+        dados_cliente.append(verificacao(dados_cliente, campos_cadastro.saldo_inicial))  
+        dados_cliente.append(verificacao(dados_cliente, campos_cadastro.limite_credito))   
+        dados_cliente.append(verificacao(dados_cliente, campos_cadastro.senha))
+        
+    return dados_cliente
+
+
+cadastro_cliente()
