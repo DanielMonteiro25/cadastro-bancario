@@ -169,7 +169,6 @@ while not fim:
 
     limpar_tela()
     menu()
-    print(dados_cliente)
 
     opcao = int(input("Sua opção: "))
 
