@@ -1,5 +1,5 @@
 from random import randint
-from os import system
+import os
 
 def menu():
     print("""MACK BANK – ESCOLHA UMA OPÇÃO
@@ -13,8 +13,10 @@ def menu():
     """)
 
 def limpar_tela():
-    
-    system("cls")
+    if os.name == "nt":
+        os.system("cls")
+    else:
+        os.system("cls")
 
 def cadastro_cliente(dados_cliente):
 
