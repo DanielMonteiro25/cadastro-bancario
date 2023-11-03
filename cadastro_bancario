@@ -28,19 +28,25 @@ def cadastro_cliente(dados_cliente):
 
     def conta():
 
-        print("Mack Bank - Cadastro de Conta\n")
+        while True: 
 
-        print(f"Número da Conta: {dados_cliente[0]}")
+            limpar_tela()
 
-        try: 
+            print("Mack Bank - Cadastro de Conta\n")
+            print(f"Número da Conta: {dados_cliente[0]}")
+            
             # nome do cliente
             try: 
                 print(f"Nome do Cliente: {dados_cliente[1]}")
             except:
                 nome_cliente = input("Nome do Cliente: ")
 
-                if nome_cliente.strip() == "": raise Exception("O nome do cliente precisa ser preenchido.")
-                elif nome_cliente.strip().isnumeric(): raise Exception("O nome do cliente não pode ser numérico.")
+                if nome_cliente.strip() == "": 
+                    input("O nome do cliente precisa ser preenchido. Pressione ENTER para prosseguir...")
+                    continue
+                elif nome_cliente.strip().isnumeric(): 
+                    input("O nome do cliente não pode ser numérico. Pressione ENTER para prosseguir...")
+                    continue
 
                 dados_cliente.append(nome_cliente)
 
@@ -52,7 +58,8 @@ def cadastro_cliente(dados_cliente):
                     telefone = int(input("Telefone.......: "))
                     dados_cliente.append(telefone)
                 except:
-                    raise ValueError("O telefone precisa conter apenas números.")
+                    input("Digite um valor correto para o telefon. Pressione ENTER para prosseguir...")
+                    continue
 
             # e-mail
             try: 
@@ -61,7 +68,10 @@ def cadastro_cliente(dados_cliente):
                 email = input("E-mail..........: ")
 
                 email = email.strip()
-                if not "@" in email or not "." in email: raise Exception("Email Inválido!")
+                if not "@" in email or not "." in email: 
+                    input("Email Inválido! Pressione ENTER para prosseguir...")
+                    continue
+
                 dados_cliente.append(email)
 
             # saldo inicial
@@ -73,7 +83,8 @@ def cadastro_cliente(dados_cliente):
                     if saldo_inical < 1000: raise 
                     dados_cliente.append(saldo_inical)
                 except:
-                    raise ValueError("O saldo inicial precisa ser numérico e maior que 1000.") 
+                    input("O saldo inicial precisa ser numérico e maior que 1000. Pressione ENTER para prosseguir...") 
+                    continue
 
             # limite de crédito
             try:
@@ -83,31 +94,28 @@ def cadastro_cliente(dados_cliente):
                     limite_credito = float(input("Limite de Crédito: R$ "))
                     dados_cliente.append(limite_credito)
                 except:
-                    raise ValueError("O valor precisa ser numérico e maior ou igual a 0.")
+                    input("O valor precisa ser numérico e maior ou igual a 0. Pressione ENTER para prosseguir...")
+                    continue
 
             # senha
             senha = input(f"Senha............: ")
 
-            if len(senha) != 6: raise Exception("A senha precisa ter 6 caracteres.")
+            if len(senha) != 6: 
+                input("A senha precisa ter 6 caracteres. Pressione ENTER para prosseguir...")
+                continue
             else: 
                 confirmacao_senha = input("Repita a Senha...: ")
-                if senha != confirmacao_senha: raise ValueError("As senhas precisam ser iguais!")
+                if senha != confirmacao_senha: 
+                    input("As senhas precisam ser iguais! Pressione ENTER para prosseguir...")
+                    continue
                 dados_cliente.append(senha)
-
-        except ValueError as e:
-            input(f"{e} Digite ENTER para prosseguir...")
-            limpar_tela()
-            conta()
-
-        except Exception as e:
-            input(f"{e} Digite ENTER para prosseguir...")
-            limpar_tela()
-            conta()
+                
+            input("\nCadastro realizado! Pressione ENTER para voltar ao menu...")
+            return dados_cliente
 
     conta()
     
-    input("\nCadastro realizado! Pressione ENTER para voltar ao menu...")
-    return dados_cliente
+
 
 def deposito(dados_cliente, saques_depositos):
 
