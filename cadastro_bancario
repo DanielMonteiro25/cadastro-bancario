@@ -125,7 +125,6 @@ def cadastro_cliente(dados_cliente):
     input("\nCadastro realizado! Pressione ENTER voltar ao menu...")
     return dados_cliente
 
-    
 def deposito(dados_cliente, saques_depositos):
 
     limpar_tela()
