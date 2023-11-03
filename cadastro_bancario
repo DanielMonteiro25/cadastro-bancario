@@ -14,7 +14,10 @@ def menu():
     """)
 
 def limpar_tela():
-    os.system("cls")
+    if os.name == "nt":
+        os.system("cls")
+    else:
+        os.system("cls")
 
 def cadastro_cliente(dados_cliente):
 
@@ -115,13 +118,14 @@ def cadastro_cliente(dados_cliente):
                     print("As senhas precisam ser iguais! Pressione alguma tecla para prosseguir...")
                     msvcrt.getch()
                     continue
-                dados_cliente.append(senha)
-    
+                else:
+                    dados_cliente.append(senha)
+                    break
     conta()
 
     input("\nCadastro realizado! Pressione ENTER voltar ao menu...")
     return dados_cliente
-
+    
 def deposito(dados_cliente, saques_depositos):
 
     limpar_tela()
