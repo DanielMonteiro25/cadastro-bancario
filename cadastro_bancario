@@ -14,10 +14,7 @@ def menu():
     """)
 
 def limpar_tela():
-    if os.name == "nt":
-        os.system("cls")
-    else:
-        os.system("clear")
+    os.system("cls")
 
 def cadastro_cliente(dados_cliente):
 
