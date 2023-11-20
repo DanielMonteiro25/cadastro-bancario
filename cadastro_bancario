@@ -1,214 +1,158 @@
 from random import randint
-import os
-import msvcrt
+from os import system
 
-def menu():
-    print("""MACK BANK – ESCOLHA UMA OPÇÃO
-          
-    (1) CADASTRAR CONTA CORRENTE
-    (2) DEPOSITAR
-    (3) SACAR
-    (4) CONSULTAR SALDO
-    (5) CONSULTAR EXTRATO
-    (6) FINALIZAR
-    """)
+def limpar_painel():
+    system("cls")
 
-def limpar_tela():
-    if os.name == "nt":
-        os.system("cls")
-    else:
-        os.system("cls")
+def cadastro_cliente(dados_cliente: list):
 
-def cadastro_cliente(dados_cliente):
+    def chamar_dados(dados_cliente):
 
-    def gerar_conta():
-        # randint -> Return a random integer N such that a <= N <= b. Alias for randrange(a, b+1).
+        dados_painel = ["Número da Conta:", "Nome do Cliente:", "Telefone.......:", "E-mail..........:", "Saldo Inicial...:", "Limite de Crédito: ", "Senha............:"]
+
+        len(dados_cliente)
+        limpar_painel()
+
+        for i in range(len(dados_cliente)):
+            print(dados_painel[i], dados_cliente[i])
+
+    def conta() -> list:
         conta = randint(1000, 9999)
-        return conta
+        dados_cliente.append(conta)
+        return dados_cliente
 
-    # aqui nessa parte eu adiciono o número da conta na lista com os dados do cliente:
-    dados_cliente.append(gerar_conta())
+    def nome() -> list:
+        
+        valido = False
+        nome = ""
 
-    def conta():
+        while not valido:
+            chamar_dados(dados_cliente)
+            nome = input("Nome do Cliente: ").strip()
 
-        while True: 
-
-            limpar_tela()
-
-            print("Mack Bank - Cadastro de Conta\n")
-            print(f"Número da Conta: {dados_cliente[0]}")
+            nome_vazio = nome == ""
+            nome_numerico = nome.isnumeric()
             
-            # nome do cliente
-            try: 
-                print(f"Nome do Cliente: {dados_cliente[1]}")
-            except:
-                nome_cliente = input("Nome do Cliente: ")
-
-                if nome_cliente.strip() == "": 
-                    print("O nome do cliente precisa ser preenchido. Pressione alguma tecla para prosseguir...")
-                    msvcrt.getch()
-                    continue
-                elif nome_cliente.strip().isnumeric(): 
-                    print("O nome do cliente não pode ser numérico. Pressione alguma tecla para prosseguir...")
-                    msvcrt.getch()
-                    continue
-
-                dados_cliente.append(nome_cliente)
-
-            # telefone
-            try:
-                print(f"Telefone.......: {dados_cliente[2]}")
-            except:
-                try:
-                    telefone = int(input("Telefone.......: "))
-                    dados_cliente.append(telefone)
-                except:
-                    print("Digite um valor correto para o telefon. Pressione alguma tecla para prosseguir...")
-                    msvcrt.getch()
-                    continue
-
-            # e-mail
-            try: 
-                print(f"E-mail..........: {dados_cliente[3]}")
-            except:
-                email = input("E-mail..........: ")
-
-                email = email.strip()
-                if not "@" in email or not "." in email: 
-                    print("Email Inválido! Pressione alguma tecla para prosseguir...")
-                    msvcrt.getch()
-                    continue
-
-                dados_cliente.append(email)
-
-            # saldo inicial
-            try:
-                print(f"Saldo Inicial...: R$ {dados_cliente[4]}")
-            except:
-                try:
-                    saldo_inical = float(input("Saldo Inicial...: R$ "))
-                    if saldo_inical < 1000: raise 
-                    dados_cliente.append(saldo_inical)
-                except:
-                    print("O saldo inicial precisa ser numérico e maior que 1000. Pressione alguma tecla para prosseguir...") 
-                    msvcrt.getch()
-                    continue
-
-            # limite de crédito
-            try:
-                print(f"Limite de Crédito: R$ {dados_cliente[5]}")
-            except:
-                try:
-                    limite_credito = float(input("Limite de Crédito: R$ "))
-                    dados_cliente.append(limite_credito)
-                except:
-                    print("O valor precisa ser numérico e maior ou igual a 0. Pressione alguma tecla para prosseguir...")
-                    msvcrt.getch()
-                    continue
-            # senha
-            senha = input(f"Senha............: ")
-
-            if len(senha) != 6: 
-                print("A senha precisa ter 6 caracteres. Pressione alguma tecla para prosseguir...")
-                msvcrt.getch()
+            if not nome_vazio and not nome_numerico:
+                dados_cliente.append(nome)
+                valido = True
+            else:
                 continue
-            else: 
-                confirmacao_senha = input("Repita a Senha...: ")
-                if senha != confirmacao_senha: 
-                    print("As senhas precisam ser iguais! Pressione alguma tecla para prosseguir...")
-                    msvcrt.getch()
-                    continue
+
+        return dados_cliente
+
+    def telefone() -> list:
+        
+        valido = False
+        telefone = ""
+
+        while not valido:
+            chamar_dados(dados_cliente)
+            telefone = input("Telefone.......: ").strip()
+
+            telefone_vazio = telefone == ""
+            telefone_numerico = telefone.isnumeric()
+
+            if not telefone_vazio and  telefone_numerico:
+                dados_cliente.append(telefone)
+                valido = True
+            else:
+                continue
+            
+        return dados_cliente
+            
+    def email() -> list:
+        
+        valido = False
+        email = ""
+
+        while not valido:
+            chamar_dados(dados_cliente)
+            email = input("E-mail..........: ").strip()
+
+            email_vazio = email == ""
+            email_valido = "gmail" in email
+
+            if not email_vazio and email_valido:
+                dados_cliente.append(email)
+                valido = True
+            else:
+                continue
+        
+        return dados_cliente
+
+    def saldo_inicial() -> list:
+        
+        valido = False
+        saldo_inicial = 0
+
+        while not valido:
+            chamar_dados(dados_cliente)
+            try:
+                saldo_inicial = float(input("Saldo Inicial...: "))
+
+                if saldo_inicial > 1000:
+                    dados_cliente.append(saldo_inicial)
+                    valido = True
                 else:
-                    dados_cliente.append(senha)
-                    break
-    conta()
+                    continue
+            except:
+                continue
+        
+        return dados_cliente
 
-    input("\nCadastro realizado! Pressione ENTER voltar ao menu...")
-    return dados_cliente
+    def limite_credito() -> list:
+        
+        valido = False
+        limite_credito = 0
+
+        while not valido:
+            chamar_dados(dados_cliente)
+            try:
+                limite_credito = float(input("Limite de Crédito: "))
+
+                if limite_credito > 0:
+                    dados_cliente.append(limite_credito)
+                    valido = True
+                else:
+                    continue
+            except:
+                continue
+
+        return dados_cliente
+
+    def senha() -> list:
     
-def deposito(dados_cliente, saques_depositos):
+        valido = False
+        senha = ""
 
-    limpar_tela()
+        while not valido:
+            chamar_dados(dados_cliente)
+            senha = input("Senha............: ").strip()
 
-    print("MACK BANK – SAQUE DA CONTA\n")
+            senha_espaco = " " in senha
+            senha_tamanho_errado = len(senha) != 6
 
-    # verifico se o formato dos números são validos e se o funcionamento está certo.
-    try:
-        numero_conta = int(input("Informe o número da conta: "))
+            if not senha_espaco and not senha_tamanho_errado:
+                confirmar_senha = input("Repita a Senha...: ")
+                if senha == confirmar_senha:
+                    dados_cliente.append(senha)
+                    valido = True
+                else:
+                    continue
 
-        if (numero_conta == dados_cliente[0]) == False: raise ValueError("Conta não encontrada.")
-                    
-        print(f"Nome do Cliente: {dados_cliente[1]}")
+        return dados_cliente
 
-        valor_deposito = float(input("Digite o valor do depósito: "))
+    conta()
+    nome()
+    telefone()
+    email()
+    saldo_inicial()
+    limite_credito()
+    senha()
 
-        if valor_deposito <= 0:
-            raise ValueError("Digite um valor maior do que 0.")
-        
-        dados_cliente[4] = dados_cliente[4] + valor_deposito
-        saques_depositos.append(valor_deposito)
+    return dados_cliente
 
-        input("\nDepósito realizado com sucesso! Pressione alguma ENTER para prosseguir.")
-        
-    except ValueError as e:
-        input(f"{e} Pressione ENTER para tentar novamente...")
-        deposito(dados_cliente, saques_depositos)
-
-    except Exception as e:
-        input(f"{e} Pressione ENTER para tentar novamente...")
-        deposito(dados_cliente, saques_depositos)
-
-    return dados_cliente, saques_depositos
-
-fim = False
-cadastro_preenchido = False
-saques_depositos = []
 dados_cliente = []
 
-while not fim:
-
-    limpar_tela()
-    menu()
-
-    opcao = int(input("Sua opção: "))
-
-    match opcao:
-        
-        # cadastro
-        case 1:
-            if not cadastro_preenchido:
-                limpar_tela()
-                dados_cliente = cadastro_cliente(dados_cliente)
-                cadastro_preenchido = True
-            else:
-                input("O cadastro já foi feito. Presione ENTER para voltar ao menu inicial.")
-        # deposito
-        case 2:
-            if not cadastro_preenchido:
-                input("O cadastro ainda não foi feito. Presione ENTER para voltar ao menu inicial.")
-            else:
-                dados_cliente, saques_depositos = deposito(dados_cliente, saques_depositos)
-        # saque
-        case 3:
-            ...
-        # consulta saldo
-        case 4:
-            ...
-        # consulta extrato
-        case 5:
-            ...
-        # finalizar
-        case 6:
-            fim = True
-        # opção inválida
-        case _:
-            print("\nDigite uma opção válida! Pressine alguma tecla para voltar ao menu...")
-            msvcrt.getch()
-
-limpar_tela()
-print("""MACK BANK – SOBRE
-      
-Este programa foi desenvolvido por:
-      
-Daniel Monteiro - 32389574
-""")
+cadastro_cliente(dados_cliente)
